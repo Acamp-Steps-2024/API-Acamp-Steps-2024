@@ -1,5 +1,5 @@
-import { PostgresConnection } from "./connections/Postgres";
-import { GoogleSheetsConnection } from "./connections/GoogleSheets";
+import { PostgresConnection } from "./databases/Postgres";
+import { GoogleSheetsConnection } from "./databases/GoogleSheets";
 
 export type ConnectionType = "postgres" | "google-sheets";
 

@@ -1,14 +1,12 @@
 import { User } from '../../models/user/UserModel';
-import { getDbConnection } from '../index';
 
 import GoogleSheetsUserRepository from './GoogleSheetsUserRepository';
 import DatabaseUserRepository from './DatabaseUserRepository';
 
-// TODO: Move to .env file
-const connectionType = 'google-sheets'as const;
+const connectionType = process.env.DB_CONNECTION_TYPE;
 
 export interface UserRepository {
-    findAll(): User[];
+    findAll(): Promise<User[]>;
 }
 
 export default connectionType === 'google-sheets' ? new GoogleSheetsUserRepository() : new DatabaseUserRepository() as UserRepository;

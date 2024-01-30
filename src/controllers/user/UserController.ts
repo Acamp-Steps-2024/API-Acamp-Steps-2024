@@ -9,10 +9,8 @@ class UserController {
       const users = userRepository.findAll();
       res.status(200).send(new ResponseDto("Success", users));
 
-      
     } catch (error) {
-      console.error(error);
-      throw new HTTPError(500, "Internal server error");
+      throw new HTTPError(500, "Internal server error", error);
     }
   }
 }

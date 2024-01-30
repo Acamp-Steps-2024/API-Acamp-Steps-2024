@@ -1,4 +1,5 @@
 import express from "express";
+require("dotenv").config();
 
 import { Request, Response, NextFunction } from "express";
 import { HTTPError, isHTTPError } from "./models/errorHandling";

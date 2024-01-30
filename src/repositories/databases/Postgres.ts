@@ -2,7 +2,7 @@ export class PostgresConnection {
     constructor() {
     }
 
-    query(query: string) {
+    async query(query: string) {
         return [];
     }
 }
