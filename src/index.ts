@@ -1,5 +1,5 @@
 import express from "express";
-require("dotenv").config();
+import { Settings } from "@config/Settings";
 
 import UserRouter from "./controllers/user/UserRouter";
 import { responseMiddleware } from "@middlewares/responseHandler/ResponseMiddleware";
@@ -11,6 +11,6 @@ App.use(express.json());
 App.use(responseMiddleware);
 
 Router.use("/users", UserRouter);
-App.use(Router);
+App.use(`/${Settings.API_VERSION}`, Router);
 
 App.listen(3000, () => console.log("Server is running on port 3000"));

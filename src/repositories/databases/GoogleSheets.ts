@@ -1,3 +1,4 @@
+import { Settings } from '@config/Settings';
 const { google } = require("googleapis");
 
 interface GoogleSheetsAuth {
@@ -23,7 +24,7 @@ export class GoogleSheetsConnection {
       auth: client,
     });
 
-    const spreadsheetId = process.env.SPREADSHEET_ID as string;
+    const spreadsheetId = Settings.SPREADSHEET_ID;
 
     return {
       auth,

@@ -1,9 +1,11 @@
+import { Settings } from '@config/Settings';
+
 import { User, UserResume } from '@models/user/UserModel';
 
 import GoogleSheetsUserRepository from './GoogleSheetsUserRepository';
 import DatabaseUserRepository from './DatabaseUserRepository';
 
-const connectionType = process.env.DB_CONNECTION_TYPE;
+const connectionType = Settings.DB_CONNECTION_TYPE;
 
 export interface UserRepository {
     findAll(): Promise<UserResume[]>;
