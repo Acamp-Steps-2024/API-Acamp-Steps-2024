@@ -1,0 +1,1 @@
+export const REPORTS_INSCRIPTION_MODULE = "inscriptions";

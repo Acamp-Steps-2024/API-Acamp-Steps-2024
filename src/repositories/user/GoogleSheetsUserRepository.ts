@@ -3,6 +3,7 @@ import { GoogleSheetsConnection } from "@repositories/databases/GoogleSheets";
 
 import { SexInterface } from "@models/sex/SexInterface";
 import { ChurchInterface } from "@models/church/ChurchInterface";
+import { PaymentInterface } from "@models/payment/PaymentInterface";
 import { TicketInterface } from "@models/ticket/TicketInterface";
 import { User, UserResume } from "@models/user/UserModel";
 import { UserRepository } from "./UserRepository";
@@ -18,9 +19,11 @@ export default class GoogleSheetsUserRepository implements UserRepository {
   async findAll(): Promise<UserResume[]> {
     const rows = await connection.getAllRowsOfSpreadSheet(this.spreadSheetName);
     
-    return rows.map((row) => {
+    const allUsers = rows.map((row) => {
       return (this.convertUserArrayToUserModel(row)) as UserResume;
     });
+
+    return this.orderUsersByName(allUsers);
   }
 
   async findById(id: number): Promise<User | null> {
@@ -67,7 +70,7 @@ export default class GoogleSheetsUserRepository implements UserRepository {
       String(data[19]) as unknown as ChurchInterface,
       String(data[20]),
       String(data[21]),
-      String(data[22]),
+      String(data[22]) as unknown as PaymentInterface,
       data[23] ? convertStringToDate(String(data[23])) : null,
       String(data[24]),
       data[25] ? convertStringToDate(String(data[25])) : null,
@@ -75,5 +78,11 @@ export default class GoogleSheetsUserRepository implements UserRepository {
       String(data[27]) as unknown as TicketInterface,
       String(data[28]),
    );
+  }
+
+  private orderUsersByName(users: UserResume[]): UserResume[] {
+    return users.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
   }
 }

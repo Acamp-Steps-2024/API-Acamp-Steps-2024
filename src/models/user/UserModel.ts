@@ -1,5 +1,6 @@
 import { SexInterface } from "@models/sex/SexInterface";
 import { ChurchInterface } from "@models/church/ChurchInterface";
+import { PaymentInterface } from "@models/payment/PaymentInterface";
 import { TicketInterface } from "@models/ticket/TicketInterface";
 import { UserInterface } from "./UserInterface";
 export class User implements UserInterface{
@@ -25,7 +26,7 @@ export class User implements UserInterface{
   church: ChurchInterface;
   allergies: string;
   medicines: string;
-  payment: string;
+  payment: PaymentInterface;
   paymentDate: Date | null;
   paymentCode: string;
   checkinDate: Date | null;
@@ -56,7 +57,7 @@ export class User implements UserInterface{
     church: ChurchInterface,
     allergies: string,
     medicines: string,
-    payment: string,
+    payment: PaymentInterface,
     paymentDate: Date | null,
     paymentCode: string,
     checkinDate: Date | null,
@@ -137,6 +138,8 @@ export type UserResume = Pick<
   | "phone"
   | "birthDate"
   | "church"
+  | "payment"
   | "checkinDate"
   | "checkoutDate"
+  | "ticket"
 >;
