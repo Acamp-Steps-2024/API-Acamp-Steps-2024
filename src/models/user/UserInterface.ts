@@ -1,9 +1,13 @@
+import { SexInterface } from "@models/sex/SexInterface";
+import { ChurchInterface } from "@models/church/ChurchInterface";
+import { TicketInterface } from "@models/ticket/TicketInterface";
+
 export interface UserInterface {
   id: number;
   cpf: string;
   name: string;
   surname: string;
-  sex: UserSex;
+  sex: SexInterface;
   rg: string;
   email: string;
   phone: string;
@@ -18,7 +22,7 @@ export interface UserInterface {
   neighborhood: string;
   city: string;
   state: string;
-  church: Church;
+  church: ChurchInterface;
   allergies: string;
   medicines: string;
   payment: string;
@@ -26,11 +30,11 @@ export interface UserInterface {
   paymentCode: string;
   checkinDate: Date | null;
   checkoutDate: Date | null;
-  ticket: Ticket;
+  ticket: TicketInterface;
   daily: string;
 }
 
-export enum UserSex {
+/*export enum UserSex {
   "Masculino" = "Masculino",
   "Feminino" = "Feminino",
 }
@@ -57,4 +61,4 @@ export enum Church {
 export enum Ticket {
   "Acampante" = "Acampante",
   "Parcial" = "Parcial",
-}
+}*/

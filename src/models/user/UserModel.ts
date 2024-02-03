@@ -1,10 +1,13 @@
-import { UserInterface, Church, UserSex, Ticket } from "./UserInterface";
+import { SexInterface } from "@models/sex/SexInterface";
+import { ChurchInterface } from "@models/church/ChurchInterface";
+import { TicketInterface } from "@models/ticket/TicketInterface";
+import { UserInterface } from "./UserInterface";
 export class User implements UserInterface{
   id: number;
   cpf: string;
   name: string;
   surname: string;
-  sex: UserSex;
+  sex: SexInterface;
   rg: string;
   email: string;
   phone: string;
@@ -19,7 +22,7 @@ export class User implements UserInterface{
   neighborhood: string;
   city: string;
   state: string;
-  church: Church;
+  church: ChurchInterface;
   allergies: string;
   medicines: string;
   payment: string;
@@ -27,7 +30,7 @@ export class User implements UserInterface{
   paymentCode: string;
   checkinDate: Date | null;
   checkoutDate: Date | null;
-  ticket: Ticket;
+  ticket: TicketInterface;
   daily: string;
 
   constructor(
@@ -35,7 +38,7 @@ export class User implements UserInterface{
     cpf: string,
     name: string,
     surname: string,
-    sex: UserSex,
+    sex: SexInterface,
     rg: string,
     email: string,
     phone: string,
@@ -50,7 +53,7 @@ export class User implements UserInterface{
     neighborhood: string,
     city: string,
     state: string,
-    church: Church,
+    church: ChurchInterface,
     allergies: string,
     medicines: string,
     payment: string,
@@ -58,7 +61,7 @@ export class User implements UserInterface{
     paymentCode: string,
     checkinDate: Date | null,
     checkoutDate: Date | null,
-    ticket: Ticket,
+    ticket: TicketInterface,
     daily: string
   ) {
     this.id = id
