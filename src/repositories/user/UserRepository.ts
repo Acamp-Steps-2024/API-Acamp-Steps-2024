@@ -1,4 +1,4 @@
-import { User } from '../../models/user/UserModel';
+import { User, UserResume } from '@models/user/UserModel';
 
 import GoogleSheetsUserRepository from './GoogleSheetsUserRepository';
 import DatabaseUserRepository from './DatabaseUserRepository';
@@ -6,7 +6,9 @@ import DatabaseUserRepository from './DatabaseUserRepository';
 const connectionType = process.env.DB_CONNECTION_TYPE;
 
 export interface UserRepository {
-    findAll(): Promise<User[]>;
+    findAll(): Promise<UserResume[]>;
+    findById(id: number): Promise<User | null>;
+    findByCpf(cpf: string): Promise<User | null>;
 }
 
 export default connectionType === 'google-sheets' ? new GoogleSheetsUserRepository() : new DatabaseUserRepository() as UserRepository;

@@ -1,5 +1,5 @@
-import { PostgresConnection } from '../databases/Postgres';
-import { getDbConnection } from '../index';
+import { PostgresConnection } from '@repositories/databases/Postgres';
+import { getDbConnection } from '@repositories/index';
 import { UserRepository } from './UserRepository';
 
 const connectionType = 'postgres'as const;
@@ -9,6 +9,14 @@ export default class DatabaseUserRepository implements UserRepository{
     constructor() {
     }
     async findAll(): Promise<any> {
+        return await connection.query('SELECT * FROM users');
+    }
+
+    async findById(id: number): Promise<any> {
+        return await connection.query('SELECT * FROM users');
+    }
+
+    async findByCpf(cpf: string): Promise<any> {
         return await connection.query('SELECT * FROM users');
     }
 }
