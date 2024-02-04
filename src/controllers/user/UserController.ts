@@ -36,14 +36,14 @@ class UserController {
 
       (res as ResponseInterface).apiSuccess({ 
         statusCode: StatusCodes.OK, 
-        message: "Users Retrieved Successfully", 
+        message: "Users Retrieved Successfully.", 
         data: dataResponse 
       });
 
     } catch (error) {
       (res as ResponseInterface).apiFailure({ 
         statusCode: StatusCodes.INTERNAL_SERVER_ERROR, 
-        message: "Cannot get users from database", 
+        message: "Unable to estabilish a communication with the database. Try again later.",
         error: error 
       });
     }
@@ -56,20 +56,20 @@ class UserController {
 
       if (!user) {
         (res as ResponseInterface).apiFailure({ 
-          statusCode: StatusCodes.NOT_FOUND, message: "User Not Found" });
+          statusCode: StatusCodes.NOT_FOUND, message: "User Not Found." });
         return;
       }
 
       (res as ResponseInterface).apiSuccess({ 
         statusCode: StatusCodes.OK, 
-        message: "User Retrieved Successfully", 
+        message: "User Retrieved Successfully.", 
         data: user 
       });
 
     } catch (error) {
       (res as ResponseInterface).apiFailure({ 
         statusCode: StatusCodes.INTERNAL_SERVER_ERROR, 
-        message: "Cannot get users from database", 
+        message: "Unable to estabilish a communication with the database. Try again later.",
         error: error 
       });
     }
@@ -83,21 +83,22 @@ class UserController {
       if (!user) {
         (res as ResponseInterface).apiFailure({ 
           statusCode: StatusCodes.NOT_FOUND, 
-          message: "User Not Found" 
+          message: "User Not Found." 
         });
         return;
       }
 
       (res as ResponseInterface).apiSuccess({ 
         statusCode: StatusCodes.OK, 
-        message: "User Retrieved Successfully", 
+        message: "User Retrieved Successfully.", 
         data: user 
       });
 
     } catch (error) {
       (res as ResponseInterface).apiFailure({ 
         statusCode: StatusCodes.INTERNAL_SERVER_ERROR, 
-        message: "Cannot get users from database", error: error 
+        message: "Unable to estabilish a communication with the database. Try again later.",
+        error: error
       });
     }
   }

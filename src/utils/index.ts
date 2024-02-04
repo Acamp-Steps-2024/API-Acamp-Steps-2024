@@ -16,6 +16,10 @@ export function convertStringToDate(date: string): Date {
   );
 }
 
+export function convertDateToString(date: Date): string {
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+}
+
 export function getAge(date: Date): number {
   const today = new Date();
   const birthDate = new Date(date);

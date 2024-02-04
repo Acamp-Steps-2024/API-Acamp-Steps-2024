@@ -8,13 +8,13 @@ import { TicketInterface } from "@models/ticket/TicketInterface";
 import { User, UserResume } from "@models/user/UserModel";
 import { UserRepository } from "./UserRepository";
 
-import { convertStringToDate } from "@utils/index";
+import { convertDateToString, convertStringToDate } from "@utils/index";
 
 const connectionType = 'google-sheets'as const;
 const connection: GoogleSheetsConnection = getDbConnection(connectionType).getRealConnection();
 
 export default class GoogleSheetsUserRepository implements UserRepository {
-  spreadSheetName: string = "Inscrições 2024";
+  spreadSheetName: string = "teste";
 
   async findAll(): Promise<UserResume[]> {
     const rows = await connection.getAllRowsOfSpreadSheet(this.spreadSheetName);
@@ -44,6 +44,12 @@ export default class GoogleSheetsUserRepository implements UserRepository {
     });
 
     return user ? this.convertUserArrayToUserModel(user) : null;
+  }
+
+  async updateOneAttribute(row: number, column: string, value: any): Promise<User> {
+    await connection.updateCellOfSpreadSheet(this.spreadSheetName, row, column, value);
+
+    return await this.findById(row) as User;
   }
 
   private convertUserArrayToUserModel(data: String[]): User {

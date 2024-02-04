@@ -315,9 +315,7 @@ class ReportsController {
 
     static async getInscriptionsByCheckin(req: Request, res: Response<ResponseInterface>): Promise<void> {
         try {
-            const checkinType = Boolean(req.params.checkin);
             const allUsers = await userRepository.findAll();
-
             const usersByCheckin = allUsers.filter((user) => user.checkinDate !== null);
 
             const dataResponse = {
@@ -327,7 +325,7 @@ class ReportsController {
 
             (res as ResponseInterface).apiSuccess({ 
                 statusCode: StatusCodes.OK, 
-                message: `Summary of Inscriptions Report Filtered By Checkin '${checkinType}' Successfully obtained.`,
+                message: `Summary of Inscriptions Report Filtered By Checkin Successfully obtained.`,
                 data: dataResponse
             });
             

@@ -51,4 +51,41 @@ export class GoogleSheetsConnection {
     const rows = response.data.values;
     return rows;
   }
+
+  async updateRowOfSpreadSheet(
+    spreadsheetName: string,
+    row: number,
+    data: any[]
+  ): Promise<void> {
+    const { googleSheets, auth, spreadsheetId } = await this.getAuthSheets();
+
+    await googleSheets.spreadsheets.values.update({
+      auth,
+      spreadsheetId,
+      range: `${spreadsheetName}!A${row}`,
+      valueInputOption: "RAW",
+      requestBody: {
+        values: [data],
+      },
+    });
+  }
+
+  async updateCellOfSpreadSheet(
+    spreadsheetName: string,
+    row: number,
+    column: string,
+    data: any
+  ): Promise<void> {
+    const { googleSheets, auth, spreadsheetId } = await this.getAuthSheets();
+
+    await googleSheets.spreadsheets.values.update({
+      auth,
+      spreadsheetId,
+      range: `${spreadsheetName}!${column}${row + 2}`,
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [[data]],
+      },
+    });
+  }
 }
