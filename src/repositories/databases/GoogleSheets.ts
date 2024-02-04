@@ -52,9 +52,26 @@ export class GoogleSheetsConnection {
     return rows;
   }
 
+  async insertRowInSpreadSheet(
+    spreadsheetName: string,
+    data: any[]
+  ): Promise<void> {
+    const { googleSheets, auth, spreadsheetId } = await this.getAuthSheets();
+
+    await googleSheets.spreadsheets.values.append({
+      auth,
+      spreadsheetId,
+      range: `${spreadsheetName}!A1`,
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [data],
+      },
+    });
+  }
+
   async updateRowOfSpreadSheet(
     spreadsheetName: string,
-    row: number,
+    rowIndex: number,
     data: any[]
   ): Promise<void> {
     const { googleSheets, auth, spreadsheetId } = await this.getAuthSheets();
@@ -62,8 +79,8 @@ export class GoogleSheetsConnection {
     await googleSheets.spreadsheets.values.update({
       auth,
       spreadsheetId,
-      range: `${spreadsheetName}!A${row}`,
-      valueInputOption: "RAW",
+      range: `${spreadsheetName}!A${rowIndex + 2}`,
+      valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [data],
       },
@@ -72,7 +89,7 @@ export class GoogleSheetsConnection {
 
   async updateCellOfSpreadSheet(
     spreadsheetName: string,
-    row: number,
+    rowIndex: number,
     column: string,
     data: any
   ): Promise<void> {
@@ -81,7 +98,7 @@ export class GoogleSheetsConnection {
     await googleSheets.spreadsheets.values.update({
       auth,
       spreadsheetId,
-      range: `${spreadsheetName}!${column}${row + 2}`,
+      range: `${spreadsheetName}!${column}${rowIndex + 2}`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [[data]],

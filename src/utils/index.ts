@@ -16,6 +16,10 @@ export function convertStringToDate(date: string): Date {
   );
 }
 
+export function convertSimpleDateToString(date: Date): string {
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+}
+
 export function convertDateToString(date: Date): string {
   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 }
@@ -35,4 +39,8 @@ export function getAge(date: Date): number {
 
 export function normalizeString(str: string): string {
   return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+}
+
+export function removeSpecialCharacters(str: string): string {
+  return str.replace(/[^a-zA-Z0-9]/g, "");
 }

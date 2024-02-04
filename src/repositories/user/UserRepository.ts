@@ -12,7 +12,10 @@ export interface UserRepository {
     findById(id: number): Promise<User | null>;
     findByCpf(cpf: string): Promise<User | null>;
 
-    updateOneAttribute(row: number, column: string, value: any): Promise<User>;
+    insertOne(user: User): Promise<User>;
+
+    updateOne(userId: number, user: User): Promise<User>;
+    updateOneAttribute(userId: number, column: string, value: any): Promise<User>;
 }
 
 export default connectionType === 'google-sheets' ? new GoogleSheetsUserRepository() : new DatabaseUserRepository() as UserRepository;

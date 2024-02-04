@@ -3,6 +3,7 @@ import { ResponseInterface} from "@middlewares/responseHandler/ResponseMiddlewar
 import userRepository from "@repositories/user/UserRepository";
 import { StatusCodes } from "http-status-codes";
 import { normalizeString } from "@utils/index";
+import { User } from "@models/user/UserModel";
 
 class UserController {
   static async getAllUsers(req: Request, res: Response): Promise<void> {

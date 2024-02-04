@@ -9,7 +9,13 @@ const connection: PostgresConnection = getDbConnection(connectionType).getRealCo
 export default class DatabaseUserRepository implements UserRepository{
     constructor() {
     }
-    updateOneAttribute(row: number, column: string, value: any): Promise<User> {
+    insertOne(user: User): Promise<User> {
+        throw new Error('Method not implemented.');
+    }
+    updateOne(rowIndex: number, user: User): Promise<User> {
+        throw new Error('Method not implemented.');
+    }
+    updateOneAttribute(rowIndex: number, column: string, value: any): Promise<User> {
         throw new Error('Method not implemented.');
     }
     insertCheckinDate(id: number, date: Date): Promise<any> {

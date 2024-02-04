@@ -8,7 +8,7 @@ import { TicketInterface } from "@models/ticket/TicketInterface";
 import { User, UserResume } from "@models/user/UserModel";
 import { UserRepository } from "./UserRepository";
 
-import { convertDateToString, convertStringToDate } from "@utils/index";
+import { convertDateToString, convertSimpleDateToString, convertStringToDate, removeSpecialCharacters } from "@utils/index";
 
 const connectionType = 'google-sheets'as const;
 const connection: GoogleSheetsConnection = getDbConnection(connectionType).getRealConnection();
@@ -16,14 +16,14 @@ const connection: GoogleSheetsConnection = getDbConnection(connectionType).getRe
 export default class GoogleSheetsUserRepository implements UserRepository {
   spreadSheetName: string = "teste";
 
-  async findAll(): Promise<UserResume[]> {
+  async findAll(orderByName: boolean = true): Promise<UserResume[]> {
     const rows = await connection.getAllRowsOfSpreadSheet(this.spreadSheetName);
     
     const allUsers = rows.map((row) => {
       return (this.convertUserArrayToUserModel(row)) as UserResume;
     });
 
-    return this.orderUsersByName(allUsers);
+    return orderByName ? this.orderUsersByName(allUsers) : allUsers;
   }
 
   async findById(id: number): Promise<User | null> {
@@ -46,10 +46,29 @@ export default class GoogleSheetsUserRepository implements UserRepository {
     return user ? this.convertUserArrayToUserModel(user) : null;
   }
 
-  async updateOneAttribute(row: number, column: string, value: any): Promise<User> {
-    await connection.updateCellOfSpreadSheet(this.spreadSheetName, row, column, value);
+  async insertOne(user: User): Promise<User> {
+    let userArray = this.convertUserModelToUserArray(user);
 
-    return await this.findById(row) as User;
+    await connection.insertRowInSpreadSheet(this.spreadSheetName, userArray);
+    return await this.findByCpf(removeSpecialCharacters(user.cpf)) as User;
+  }
+
+  async updateOne(userId: number, user: User): Promise<User> {
+    const rows = await this.findAll(false);
+    const userRowIndex = rows.findIndex((user) => user.id === userId);
+    const userArray = this.convertUserModelToUserArray(user);
+
+    await connection.updateRowOfSpreadSheet(this.spreadSheetName, userRowIndex, userArray);
+    return await this.findById(userId) as User;
+  }
+
+  async updateOneAttribute(userId: number, column: string, value: any): Promise<User> {
+    const rows = await this.findAll(false);
+    const userRowIndex = rows.findIndex((user) => user.id === userId);
+
+    await connection.updateCellOfSpreadSheet(this.spreadSheetName, userRowIndex, column, value);
+
+    return await this.findById(userId) as User;
   }
 
   private convertUserArrayToUserModel(data: String[]): User {
@@ -84,6 +103,40 @@ export default class GoogleSheetsUserRepository implements UserRepository {
       String(data[27]) as unknown as TicketInterface,
       String(data[28]),
    );
+  }
+
+  private convertUserModelToUserArray(user: User): any[] {
+    return [
+      user.id,
+      removeSpecialCharacters(user.cpf),
+      user.name,
+      user.surname,
+      user.sex,
+      removeSpecialCharacters(user.rg),
+      user.email,
+      removeSpecialCharacters(user.phone),
+      user.companionName,
+      convertSimpleDateToString(new Date(user.birthDate)),
+      user.responsiblePersonName,
+      removeSpecialCharacters(user.responsiblePersonDocument),
+      removeSpecialCharacters(user.responsiblePersonPhone),
+      removeSpecialCharacters(user.cep),
+      user.street,
+      user.houseNumber,
+      user.neighborhood,
+      user.city,
+      user.state,
+      user.church,
+      user.allergies,
+      user.medicines,
+      user.payment,
+      user.paymentDate ? convertDateToString(new Date(user.paymentDate)) : null,
+      user.paymentCode,
+      user.checkinDate ? convertDateToString(new Date(user.checkinDate)) : null,
+      user.checkoutDate ? convertDateToString(new Date(user.checkoutDate)) : null,
+      user.ticket,
+      user.daily,
+    ];
   }
 
   private orderUsersByName(users: UserResume[]): UserResume[] {
