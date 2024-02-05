@@ -53,6 +53,10 @@ export default class GoogleSheetsUserRepository implements UserRepository {
     return user;
   }
 
+  async setAllIdsForUsers(columnId: string, allUsers: any[], allGeneratedIds: string[]): Promise<void> {
+    await connection.updateManyCellsOfSpreadSheet(this.spreadSheetName, columnId, allUsers, allGeneratedIds);
+  }
+
   async updateOne(userId: string, user: User): Promise<User> {
     const rows = await this.findAll(false);
     const userRowIndex = rows.findIndex((user) => user.id === userId);

@@ -9,6 +9,9 @@ const connection: PostgresConnection = getDbConnection(connectionType).getRealCo
 export default class DatabaseUserRepository implements UserRepository{
     constructor() {
     }
+    setAllIdsForUsers(columnId: string, allUsers: any[], allGeneratedIds: string[]): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
     checkAvailableEmail(email: string): Promise<boolean> {
         throw new Error('Method not implemented.');
     }

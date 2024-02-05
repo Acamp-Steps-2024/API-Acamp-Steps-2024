@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { DATABASE_CHECKIN_COLUMN, DATABASE_CHECKOUT_COLUMN } from "@config/Constants";
+import { DATABASE_CHECKIN_COLUMN, DATABASE_CHECKOUT_COLUMN, DATABASE_ID_COLUMN } from "@config/Constants";
 import { ResponseInterface} from "@middlewares/responseHandler/ResponseMiddleware";
 
 import userRepository from "@repositories/user/UserRepository";
 import { convertDateToString } from "@utils/index";
+import { generateRandomID } from "@models/user/UserModel";
 
 export class FrontdeskController {
     static async getAllCheckinUsers(req: Request, res: Response, next: any) {
@@ -109,6 +110,28 @@ export class FrontdeskController {
                 statusCode: StatusCodes.OK,
                 message: "User successfully checked out.",
                 data: userUpdated
+            });
+        } catch (error) {
+            (res as ResponseInterface).apiFailure({ 
+                statusCode: StatusCodes.INTERNAL_SERVER_ERROR, 
+                message: "Unable to estabilish a communication with the database. Try again later.",
+                error: error 
+            });
+        }
+    }
+
+    static async generateIds(req: Request, res: Response, next: any) {
+        try {
+            const allUsers = await userRepository.findAll(false);
+            const churchOfAllUsers = allUsers.map((user) => user.church);
+
+            let ids = churchOfAllUsers.map((church) => generateRandomID(church));
+            await userRepository.setAllIdsForUsers(DATABASE_ID_COLUMN, allUsers, ids);
+
+            (res as ResponseInterface).apiSuccess({ 
+                statusCode: StatusCodes.OK,
+                message: "All User IDs Successfully Updated.",
+                data: allUsers
             });
         } catch (error) {
             (res as ResponseInterface).apiFailure({ 

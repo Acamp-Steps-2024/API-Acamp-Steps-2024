@@ -13,6 +13,7 @@ export interface UserRepository {
     findByCpf(cpf: string): Promise<User | null>;
 
     insertOne(user: User): Promise<User>;
+    setAllIdsForUsers(columnId: string, allUsers: any[], allGeneratedIds: string[]): Promise<void>;
 
     updateOne(userId: string, user: User): Promise<User>;
     updateOneAttribute(userId: string, column: string, value: any): Promise<User>;

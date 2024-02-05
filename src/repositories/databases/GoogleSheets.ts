@@ -1,4 +1,5 @@
 import { Settings } from '@config/Settings';
+import { User } from '@models/user/UserModel';
 const { google } = require("googleapis");
 
 interface GoogleSheetsAuth {
@@ -65,6 +66,34 @@ export class GoogleSheetsConnection {
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [data],
+      },
+    });
+  }
+
+  async updateManyCellsOfSpreadSheet(
+    spreadsheetName: string,
+    column: string,
+    allUsers: User[],
+    allGeneratedIds: string[]
+  ): Promise<void> {
+    const { googleSheets, auth, spreadsheetId } = await this.getAuthSheets();
+
+
+    console.log(column)
+    console.log(allGeneratedIds)
+
+    await googleSheets.spreadsheets.values.update({
+      auth,
+      spreadsheetId,
+      range: `${spreadsheetName}!${column}${2}:${column}${allGeneratedIds.length + 2}`,
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: allUsers.map((user, index) => {
+          if (user.id === "") {
+            return [allGeneratedIds[index]];
+          }
+          return [user.id];
+        }),
       },
     });
   }
