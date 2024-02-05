@@ -26,11 +26,11 @@ export default class GoogleSheetsUserRepository implements UserRepository {
     return orderByName ? this.orderUsersByName(allUsers) : allUsers;
   }
 
-  async findById(id: number): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     const rows = await connection.getAllRowsOfSpreadSheet(this.spreadSheetName);
 
     const user = rows.find((row) => {
-      return Number(row[0]) === id;
+      return row[0] === id;
     });
 
     return user ? this.convertUserArrayToUserModel(user) : null;
@@ -50,19 +50,19 @@ export default class GoogleSheetsUserRepository implements UserRepository {
     let userArray = this.convertUserModelToUserArray(user);
 
     await connection.insertRowInSpreadSheet(this.spreadSheetName, userArray);
-    return await this.findByCpf(removeSpecialCharacters(user.cpf)) as User;
+    return user;
   }
 
-  async updateOne(userId: number, user: User): Promise<User> {
+  async updateOne(userId: string, user: User): Promise<User> {
     const rows = await this.findAll(false);
     const userRowIndex = rows.findIndex((user) => user.id === userId);
     const userArray = this.convertUserModelToUserArray(user);
 
     await connection.updateRowOfSpreadSheet(this.spreadSheetName, userRowIndex, userArray);
-    return await this.findById(userId) as User;
+    return user;
   }
 
-  async updateOneAttribute(userId: number, column: string, value: any): Promise<User> {
+  async updateOneAttribute(userId: string, column: string, value: any): Promise<User> {
     const rows = await this.findAll(false);
     const userRowIndex = rows.findIndex((user) => user.id === userId);
 
@@ -71,38 +71,48 @@ export default class GoogleSheetsUserRepository implements UserRepository {
     return await this.findById(userId) as User;
   }
 
+  async checkAvailableCpf(cpf: string): Promise<boolean> {
+    const rows = await this.findAll();
+    return !rows.some((user) => removeSpecialCharacters(user.cpf) === removeSpecialCharacters(cpf));
+  }
+
+  async checkAvailableEmail(email: string): Promise<boolean> {
+    const rows = await this.findAll();
+    return !rows.some((user) => user.email === email);
+  }
+
   private convertUserArrayToUserModel(data: String[]): User {
-   return new User(
-      Number(data[0]),
-      String(data[1]),
-      String(data[2]),
-      String(data[3]),
-      String(data[4]) as unknown as SexInterface,
-      String(data[5]),
-      String(data[6]),
-      String(data[7]),
-      String(data[8]),
-      convertStringToDate(String(data[9])),
-      String(data[10]),
-      String(data[11]),
-      String(data[12]),
-      String(data[13]),
-      String(data[14]),
-      String(data[15]),
-      String(data[16]),
-      String(data[17]),
-      String(data[18]),
-      String(data[19]) as unknown as ChurchInterface,
-      String(data[20]),
-      String(data[21]),
-      String(data[22]) as unknown as PaymentInterface,
-      data[23] ? convertStringToDate(String(data[23])) : null,
-      String(data[24]),
-      data[25] ? convertStringToDate(String(data[25])) : null,
-      data[26] ? convertStringToDate(String(data[26])) : null,
-      String(data[27]) as unknown as TicketInterface,
-      String(data[28]),
-   );
+   return new User({
+      id: String(data[0]),
+      cpf: String(data[1]),
+      name: String(data[2]),
+      surname: String(data[3]),
+      sex: String(data[4]) as unknown as SexInterface,
+      rg: String(data[5]),
+      email: String(data[6]),
+      phone: String(data[7]),
+      companionName: String(data[8]),
+      birthDate: convertStringToDate(String(data[9])),
+      responsiblePersonName: String(data[10]),
+      responsiblePersonDocument: String(data[11]),
+      responsiblePersonPhone: String(data[12]),
+      cep: String(data[13]),
+      street: String(data[14]),
+      houseNumber: Number(data[15]),
+      neighborhood: String(data[16]),
+      city: String(data[17]),
+      state: String(data[18]),
+      church: String(data[19]) as unknown as ChurchInterface,
+      allergies: String(data[20]),
+      medicines: String(data[21]),
+      payment: String(data[22]) as unknown as PaymentInterface,
+      paymentDate: data[23] ? convertStringToDate(String(data[23])) : null,
+      paymentCode: String(data[24]),
+      checkinDate: data[25] ? convertStringToDate(String(data[25])) : null,
+      checkoutDate: data[26] ? convertStringToDate(String(data[26])) : null,
+      ticket: String(data[27]) as unknown as TicketInterface,
+      daily: String(data[28]),
+   });
   }
 
   private convertUserModelToUserArray(user: User): any[] {
@@ -115,11 +125,11 @@ export default class GoogleSheetsUserRepository implements UserRepository {
       removeSpecialCharacters(user.rg),
       user.email,
       removeSpecialCharacters(user.phone),
-      user.companionName,
+      user.companionName ? user.companionName : "",
       convertSimpleDateToString(new Date(user.birthDate)),
-      user.responsiblePersonName,
-      removeSpecialCharacters(user.responsiblePersonDocument),
-      removeSpecialCharacters(user.responsiblePersonPhone),
+      user.responsiblePersonName ? user.responsiblePersonName : "",
+      user.responsiblePersonDocument ? removeSpecialCharacters(user.responsiblePersonDocument) : "",
+      user.responsiblePersonPhone ? removeSpecialCharacters(user.responsiblePersonPhone) : "",
       removeSpecialCharacters(user.cep),
       user.street,
       user.houseNumber,
@@ -129,11 +139,11 @@ export default class GoogleSheetsUserRepository implements UserRepository {
       user.church,
       user.allergies,
       user.medicines,
-      user.payment,
-      user.paymentDate ? convertDateToString(new Date(user.paymentDate)) : null,
-      user.paymentCode,
-      user.checkinDate ? convertDateToString(new Date(user.checkinDate)) : null,
-      user.checkoutDate ? convertDateToString(new Date(user.checkoutDate)) : null,
+      user.payment ? user.payment : "",
+      user.paymentDate ? convertDateToString(new Date(user.paymentDate)) : "",
+      user.paymentCode ? user.paymentCode : "",
+      user.checkinDate ? convertDateToString(new Date(user.checkinDate)) : "",
+      user.checkoutDate ? convertDateToString(new Date(user.checkoutDate)) : "",
       user.ticket,
       user.daily,
     ];

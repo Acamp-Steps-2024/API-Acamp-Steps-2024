@@ -9,13 +9,19 @@ const connection: PostgresConnection = getDbConnection(connectionType).getRealCo
 export default class DatabaseUserRepository implements UserRepository{
     constructor() {
     }
+    checkAvailableEmail(email: string): Promise<boolean> {
+        throw new Error('Method not implemented.');
+    }
+    checkAvailableCpf(cpf: string): Promise<boolean> {
+        throw new Error('Method not implemented.');
+    }
+    updateOne(userId: string, user: User): Promise<User> {
+        throw new Error('Method not implemented.');
+    }
+    updateOneAttribute(userId: string, column: string, value: any): Promise<User> {
+        throw new Error('Method not implemented.');
+    }
     insertOne(user: User): Promise<User> {
-        throw new Error('Method not implemented.');
-    }
-    updateOne(rowIndex: number, user: User): Promise<User> {
-        throw new Error('Method not implemented.');
-    }
-    updateOneAttribute(rowIndex: number, column: string, value: any): Promise<User> {
         throw new Error('Method not implemented.');
     }
     insertCheckinDate(id: number, date: Date): Promise<any> {
@@ -25,7 +31,7 @@ export default class DatabaseUserRepository implements UserRepository{
         return await connection.query('SELECT * FROM users');
     }
 
-    async findById(id: number): Promise<any> {
+    async findById(id: string): Promise<any> {
         return await connection.query('SELECT * FROM users');
     }
 
