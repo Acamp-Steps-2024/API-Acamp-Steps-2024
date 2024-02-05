@@ -47,7 +47,7 @@ class ReportsController {
 
     static async getInscriptionsByChurch(req: Request, res: Response<ResponseInterface>): Promise<void> {
         try {
-            const churchId = Number(req.params.church);
+            const churchId = String(req.params.church).toUpperCase();
             const allUsers = await userRepository.findAll();
 
             if (ChurchMapper.get(churchId) === undefined) {
@@ -223,8 +223,8 @@ class ReportsController {
             const paymentInscriptionsMap = new Map<PaymentInterface, number>();
 
             allUsers.forEach((user) => {
-                const totalDocs = paymentInscriptionsMap.get(user.payment) || 0;
-                paymentInscriptionsMap.set(user.payment, totalDocs + 1);
+                const totalDocs = paymentInscriptionsMap.get((user.payment as PaymentInterface)) || 0;
+                paymentInscriptionsMap.set((user.payment as PaymentInterface), totalDocs + 1);
             });
 
             paymentInscriptionsMap.forEach((totalDocs, payment) => {

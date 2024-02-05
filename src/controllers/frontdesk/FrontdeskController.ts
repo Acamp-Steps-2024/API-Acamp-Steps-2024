@@ -57,7 +57,7 @@ export class FrontdeskController {
 
     static async registerCheckin(req: Request, res: Response, next: any) {
         try {
-            const userIdParam = Number(req.body.userId);
+            const userIdParam = String(req.body.userId);
             const allUsers = await userRepository.findAll();
 
             const rowIndexID = allUsers.findIndex((user) => user.id === userIdParam);
@@ -71,7 +71,7 @@ export class FrontdeskController {
                 return;
             }
 
-            const userUpdated = await userRepository.updateOneAttribute(rowIndexID, DATABASE_CHECKIN_COLUMN, convertDateToString(new Date()));
+            const userUpdated = await userRepository.updateOneAttribute(userIdParam, DATABASE_CHECKIN_COLUMN, convertDateToString(new Date()));
 
             (res as ResponseInterface).apiSuccess({ 
                 statusCode: StatusCodes.OK,
@@ -89,7 +89,7 @@ export class FrontdeskController {
 
     static async registerCheckout(req: Request, res: Response, next: any) {
         try {
-            const userIdParam = Number(req.body.userId);
+            const userIdParam = String(req.body.userId);
             const allUsers = await userRepository.findAll();
 
             const rowIndexID = allUsers.findIndex((user) => user.id === userIdParam);
@@ -103,7 +103,7 @@ export class FrontdeskController {
                 return;
             }
 
-            const userUpdated = await userRepository.updateOneAttribute(rowIndexID, DATABASE_CHECKOUT_COLUMN, convertDateToString(new Date()));
+            const userUpdated = await userRepository.updateOneAttribute(userIdParam, DATABASE_CHECKOUT_COLUMN, convertDateToString(new Date()));
 
             (res as ResponseInterface).apiSuccess({ 
                 statusCode: StatusCodes.OK,
