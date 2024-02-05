@@ -4,7 +4,7 @@ import { PaymentInterface } from "@models/payment/PaymentInterface";
 import { TicketInterface } from "@models/ticket/TicketInterface";
 
 export interface UserInterface {
-  id: number;
+  id: string;
   cpf: string;
   name: string;
   surname: string;
@@ -12,25 +12,25 @@ export interface UserInterface {
   rg: string;
   email: string;
   phone: string;
-  companionName: string;
+  companionName: string | null;
   birthDate: Date;
-  responsiblePersonName: string;
-  responsiblePersonDocument: string;
-  responsiblePersonPhone: string;
+  responsiblePersonName: string | null;
+  responsiblePersonDocument: string | null;
+  responsiblePersonPhone: string | null;
   cep: string;
   street: string;
-  houseNumber: string;
+  houseNumber: number;
   neighborhood: string;
   city: string;
   state: string;
   church: ChurchInterface;
   allergies: string;
   medicines: string;
-  payment: PaymentInterface;
+  payment: PaymentInterface | null;
   paymentDate: Date | null;
-  paymentCode: string;
+  paymentCode: string | null;
   checkinDate: Date | null;
   checkoutDate: Date | null;
   ticket: TicketInterface;
-  daily: string;
+  daily?: string | null;
 }

@@ -1,18 +1,20 @@
-export const ChurchMapper = new Map<number, string>([
-    [0, "IEQ - Água Vermelha"],
-    [1, "IEQ - Azulville"],
-    [2, "IEQ - Boa Vista"],
-    [3, "IEQ - Botafogo"],
-    [4, "IEQ - Cruzeiro do Sul"],
-    [5, "IEQ - Descalvado"],
-    [6, "IEQ - Ibaté"],
-    [7, "IEQ - Itirapina"],
-    [8, "IEQ - Tangará"],
-    [9, "IEQ - Jockey Club"],
-    [10, "IEQ - Planalto Paraíso"],
-    [11, "IEQ - Ribeirão Bonito"],
-    [12, "IEQ - Santa Felícia"],
-    [13, "IEQ - Vila Brasília"],
-    [14, "Outra"],
-    [15, "Nenhuma"]
+import { ChurchTypes } from "./ChurchInterface";
+
+export const ChurchMapper = new Map<String, ChurchTypes>([
+    ["0", ChurchTypes["IEQ - Água Vermelha"]],
+    ["1", ChurchTypes["IEQ - Azulville"]],
+    ["2", ChurchTypes["IEQ - Boa Vista"]],
+    ["3", ChurchTypes["IEQ - Botafogo"]],
+    ["4", ChurchTypes["IEQ - Cruzeiro do Sul"]],
+    ["5", ChurchTypes["IEQ - Descalvado"]],
+    ["6", ChurchTypes["IEQ - Ibaté"]],
+    ["7", ChurchTypes["IEQ - Itirapina"]],
+    ["8", ChurchTypes["IEQ - Tangará"]],
+    ["9", ChurchTypes["IEQ - Jockey Club"]],
+    ["A", ChurchTypes["IEQ - Planalto Paraíso"]],
+    ["B", ChurchTypes["IEQ - Ribeirão Bonito"]],
+    ["C", ChurchTypes["IEQ - Santa Felícia"]],
+    ["D", ChurchTypes["IEQ - Vila Brasília"]],
+    ["E", ChurchTypes["Outra"]],
+    ["F", ChurchTypes["Nenhuma"]]
 ]);
