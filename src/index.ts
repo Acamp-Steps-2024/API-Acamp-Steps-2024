@@ -23,4 +23,4 @@ Router.use("/users", UserRouter);
 Router.use("/frontdesk", FrontdeskRouter);
 App.use(`/api/${Settings.API_VERSION}`, Router);
 
-App.listen(3000, () => console.log("Server is running on port 3000"));
+App.listen(4000, () => console.log("Server is running on port 4000"));
