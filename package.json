@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules -r tsconfig-paths/register ./src/index.ts",
-    "build": "babel src -d dist --copy-files",
+    "build": "babel src -d public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
