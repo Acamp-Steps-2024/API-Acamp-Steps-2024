@@ -58,7 +58,7 @@ export class FrontdeskController {
 
     static async registerCheckin(req: Request, res: Response, next: any) {
         try {
-            const userIdParam = String(req.body.userId);
+            const userIdParam = String(req.body.userId).toUpperCase();
             const allUsers = await userRepository.findAll();
 
             const rowIndexID = allUsers.findIndex((user) => user.id === userIdParam);
@@ -90,7 +90,7 @@ export class FrontdeskController {
 
     static async registerCheckout(req: Request, res: Response, next: any) {
         try {
-            const userIdParam = String(req.body.userId);
+            const userIdParam = String(req.body.userId).toUpperCase();
             const allUsers = await userRepository.findAll();
 
             const rowIndexID = allUsers.findIndex((user) => user.id === userIdParam);
