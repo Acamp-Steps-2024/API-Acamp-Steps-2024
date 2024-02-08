@@ -29,7 +29,8 @@ import { ChurchMapper } from "@models/church/ChurchMapper";
 export class User implements UserInterface {
   @IsString()
   @Length(5, 5)
-  @IsOptional()
+  @IsDefined()
+  @IsNotEmpty()
   id: string
 
   @IsDefined()
@@ -238,7 +239,7 @@ export function getUserInput(userData: object): UserInterface {
 }
 
 export function generateRandomID(church: ChurchInterface): string {
-  const hexCode = String(Math.floor(Math.random() * 256).toString(16).padStart(3, "0")).toUpperCase();
+  const hexCode = Math.floor(Math.random() * 65536).toString(16).toUpperCase().padStart(4, "0");
   let churchCode;
 
   for (let entry of ChurchMapper.entries()) {
@@ -247,7 +248,7 @@ export function generateRandomID(church: ChurchInterface): string {
     }
   }
 
-  const group = Math.floor(Math.random() * 4) + 1;
+  const group = Math.floor(Math.random() * 2) + 1;
   return String(`${hexCode}${churchCode}${group}`);
 }
 

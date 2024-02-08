@@ -7,8 +7,6 @@ import userRepository from "@repositories/user/UserRepository";
 import { normalizeString, removeSpecialCharacters } from "@utils/index";
 import { User, getUserInput, validateUserInput } from "@models/user/UserModel";
 
-const _ = require('lodash');
-
 class UserController {
   static async getAllUsers(req: Request, res: Response): Promise<void> {
     try {
@@ -56,7 +54,7 @@ class UserController {
 
   static async getUserById(req: Request, res: Response): Promise<void> {
     try {
-      const userId = String(req.params.id);
+      const userId = String(req.params.id).toUpperCase();
       const user = await userRepository.findById(userId);
 
       if (!user) {

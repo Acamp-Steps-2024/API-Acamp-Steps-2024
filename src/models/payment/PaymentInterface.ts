@@ -5,5 +5,8 @@ export interface PaymentInterface {
 export enum PaymentTypes {
     "Em processamento" = "Em processamento",
     "Aprovado" = "Aprovado",
-    "Equipe" = "Equipe"
+    "Diretor" = "Diretor",
+    "Equipe" = "Equipe",
+    "Doacao" = "Doacao",
+    "Lider" = "Lider",
 }

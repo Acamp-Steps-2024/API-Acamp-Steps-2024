@@ -14,7 +14,7 @@ const connectionType = 'google-sheets'as const;
 const connection: GoogleSheetsConnection = getDbConnection(connectionType).getRealConnection();
 
 export default class GoogleSheetsUserRepository implements UserRepository {
-  spreadSheetName: string = "teste";
+  spreadSheetName: string = "Inscrições 2024 Pagas";
 
   async findAll(orderByName: boolean = true): Promise<UserResume[]> {
     const rows = await connection.getAllRowsOfSpreadSheet(this.spreadSheetName);

@@ -1,4 +1,5 @@
 import express from "express";
+const cors = require("cors");
 import { Settings } from "@config/Settings";
 
 import UserRouter from "@controllers/user/UserRouter";
@@ -11,6 +12,11 @@ const Router = express.Router();
 
 App.use(express.json());
 App.use(responseMiddleware);
+App.use(
+    cors({
+        origin: Settings.CORS_ORIGIN,
+    })
+)
 
 Router.use("/reports", ReportsRouter);
 Router.use("/users", UserRouter);

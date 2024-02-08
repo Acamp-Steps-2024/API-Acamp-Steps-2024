@@ -75,7 +75,7 @@ export class FrontdeskController {
             const userUpdated = await userRepository.updateOneAttribute(userIdParam, DATABASE_CHECKIN_COLUMN, convertDateToString(new Date()));
 
             (res as ResponseInterface).apiSuccess({ 
-                statusCode: StatusCodes.OK,
+                statusCode: StatusCodes.CREATED,
                 message: "User successfully checked in.",
                 data: userUpdated
             });
@@ -107,7 +107,7 @@ export class FrontdeskController {
             const userUpdated = await userRepository.updateOneAttribute(userIdParam, DATABASE_CHECKOUT_COLUMN, convertDateToString(new Date()));
 
             (res as ResponseInterface).apiSuccess({ 
-                statusCode: StatusCodes.OK,
+                statusCode: StatusCodes.CREATED,
                 message: "User successfully checked out.",
                 data: userUpdated
             });
@@ -126,6 +126,13 @@ export class FrontdeskController {
             const churchOfAllUsers = allUsers.map((user) => user.church);
 
             let ids = churchOfAllUsers.map((church) => generateRandomID(church));
+            let duplicatesIds = new Set(ids).size !== ids.length;
+
+            while (duplicatesIds) {
+                ids = churchOfAllUsers.map((church) => generateRandomID(church));
+                duplicatesIds = new Set(ids).size !== ids.length;
+            }
+
             await userRepository.setAllIdsForUsers(DATABASE_ID_COLUMN, allUsers, ids);
 
             (res as ResponseInterface).apiSuccess({ 

@@ -78,10 +78,6 @@ export class GoogleSheetsConnection {
   ): Promise<void> {
     const { googleSheets, auth, spreadsheetId } = await this.getAuthSheets();
 
-
-    console.log(column)
-    console.log(allGeneratedIds)
-
     await googleSheets.spreadsheets.values.update({
       auth,
       spreadsheetId,
